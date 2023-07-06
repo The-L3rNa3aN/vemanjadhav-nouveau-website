@@ -1,6 +1,8 @@
 {
   "dependencies": {
-    "three": "^0.154.0"
+    "enable3d": "^0.25.3",
+    "three": "^0.154.0",
+    "three-pathfinding": "^1.2.0"
   },
   "devDependencies": {
     "vite": "^4.3.9"
