@@ -1,8 +1,9 @@
 import * as THREE from "three";
+import Ammo from "./Scripts/Addons/ammo";
 import Player from "./Scripts/Player";
 import IsoCamera from "./Scripts/IsoCamera";
 
-//Initialization of variables.
+//Initialization of variables and objects.
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
 const geometry = new THREE.BoxGeometry(5, 1, 5);
@@ -13,7 +14,9 @@ const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
 var player = new Player();
-var mainCamera = new IsoCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+var mainCamera = new IsoCamera(75, 1, 0.1, 1000);
+
+const collisionConfig = new Ammo.btDefaultCollisionConfiguration();
 
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -28,6 +31,7 @@ platform.castShadow = true;
 platform.receiveShadow = true;
 // dirLight.target = testCube;
 
+//Adding objects to the scene as children.
 scene.add(platform);
 scene.add(player);
 // scene.add(helper);
@@ -41,26 +45,35 @@ mainCamera.lookAt(player.position);                 //Calling this on start so t
 
 renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
-document.addEventListener("keydown", player.MovePlayer.bind(player), false);
+// document.addEventListener("keydown", player.MovePlayer.bind(player), false);
 document.addEventListener("pointermove", onPointerMove);
-
-raycaster.setFromCamera(pointer, mainCamera);
-const intersects = raycaster.intersectObjects(scene.children);
-for(let i = 0; i < intersects.length; i++)
-{
-    intersects[i].object.material.color.set(0xff0000);
-}
+document.addEventListener("mousedown", onMouseDown);
 
 function onPointerMove(event)
 {
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    pointer.x = (event.clientX / renderer.domElement.width) * 2 - 1;
+    pointer.y = -(event.clientY / renderer.domElement.height) * 2 + 1;
+}
+
+function onMouseDown(event)
+{
+    raycaster.setFromCamera(pointer, mainCamera);
+    const intersects = raycaster.intersectObject(platform);
+
+    // for(let i = 0; i < intersects.length; i++)
+    // {
+    //     // intersects[i].object.material.color.set(0xffffff);
+    //     console.log(intersects[i].point);
+    // }
+
+    player.travelTo = intersects[0].point;
 }
 
 function animate()
 {
     requestAnimationFrame(animate);
     mainCamera.FollowTarget(player);
+    player.MovePlayerToPoint();
     renderer.render(scene, mainCamera);
 }
 

@@ -10,6 +10,7 @@ export default class Player extends THREE.Object3D
 
         this.health = 100;
         this.speed = 5;
+        this.travelTo = undefined;
 
         this.Init();
     }
@@ -46,6 +47,14 @@ export default class Player extends THREE.Object3D
             case 68:                                        //D
                 this.rotation.y -= 25;
                 break;
+        }
+    }
+
+    MovePlayerToPoint()
+    {
+        if(this.travelTo != undefined) 
+        {
+            this.position.lerp(new THREE.Vector3(this.travelTo.x, this.position.y, this.travelTo.z), 0.01);
         }
     }
 }

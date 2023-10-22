@@ -8,7 +8,7 @@ export default class IsoCamera extends THREE.PerspectiveCamera
     {
         super(fov, aspect, near, far);
 
-        this.smoothing = 0.125;
+        this.smoothing = 0.125;         //0.005 as a starting point.
         this.offset = new THREE.Vector3(-5, 5, 5);
     }
 
