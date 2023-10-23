@@ -2,6 +2,8 @@
   "dependencies": {
     "enable3d": "^0.25.3",
     "three": "^0.154.0",
+    "three-gltf-exporter": "^0.0.1",
+    "three-obj-exporter": "^0.0.1",
     "three-pathfinding": "^1.2.0"
   },
   "devDependencies": {
