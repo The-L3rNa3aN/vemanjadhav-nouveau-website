@@ -1,7 +1,8 @@
 import * as THREE from "three";
-import OBJExporter from "three-obj-exporter";
+// import OBJExporter from "three-obj-exporter";
 // import OBJExporter from "./Scripts/Addons/OBJExporter";
-import _GLTFExporter from "three-gltf-exporter";
+// import _GLTFExporter from "three-gltf-exporter";
+import GLTFExporter from "three-gltf-exporter";
 import Player from "./Scripts/Player";
 import IsoCamera from "./Scripts/IsoCamera";
 
@@ -14,7 +15,7 @@ const platform = new THREE.Mesh(geometry, material);
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
-// const exporter = new _GLTFExporter();
+const exporter = new GLTFExporter();
 const btn = document.getElementById("download-glb");
 // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
 var player = new Player();
@@ -84,17 +85,24 @@ animate();
 
 function download()
 {
-    const exporter = new _GLTFExporter();
-    exporter.parse(scene, (result) => { saveArrayBuffer(result, "testScene.glb"); }, { binary: true });
+    console.log("PASSED TO DOWNLOAD");
+    console.log(scene);
+    exporter.parse(scene, (result) =>
+    {
+        console.log("RESULT");
+        saveArrayBuffer(result, "testScene.glb");
+    }, { binary: true });
 }
 
 function saveArrayBuffer(buffer, fileName)
 {
+    console.log("PASSED TO SAVEARRAYBUFFER");
     save(new Blob([buffer], {type: "application/octet-stream"}), fileName);
 }
 
 function save(_blob, fileName)
 {
+    console.log("PASSED TO SAVE");
     const link = document.createElement("a");
     document.body.appendChild(link);
     link.href = URL.createObjectURL(_blob);
