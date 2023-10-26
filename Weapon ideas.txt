@@ -21,6 +21,10 @@ MELEE WEAPON IDEAS
 	 - Frost's Staff (Rise of the Guardians)
 	 - Chainsaw (Scarface, GTA Vice City, DOOM)
 	 - Double-handed axe (Breaking Bad / The Shining / Team Fortress 2)
+	 - Nunchaku (TMNT / Bruce Lee), Bo, Dual Katanas, Dual Sais (TMNT)
+	 - Mjolnir (Thor)
+	 - Levaithan Axe (God of War)
+	 - Blades of Chaos (God of War) (Note: I prefer this one over the axe)
 
 RANGED WEAPON IDEAS
 	 - Flintlock pistol (Pirates of the Carribbean)
@@ -40,6 +44,9 @@ RANGED WEAPON IDEAS
 	 - Bowcaster (Star Wars)
 	 - Throwing kunais (Naruto / Shadow Fight 3)
 	 - Bolt-action rifle (Territory War)
+	 - Anton's shotgun (No Country For Old Men)
+	 - Noisy Cricket (MIB)
+	 - The Golden Gun (Scaramanga's gun from TMWTGG 1974)
 
 OFFENSIVE EQUIPMENT
 	 - Molotov (Counter Strike)
@@ -50,6 +57,8 @@ OFFENSIVE EQUIPMENT
 	 - Caltrops (Team Fortress: Classic)
 	 - Kunai with explosive tag (Naruto)
 	 - Boot (Territory War)
+	 - Discord light mode (dunno if this should either be classed under RANGED or OFF EQUIPMENT)
+	 - Bolt Gun (No Country For Old Men)
 
 CONSUMABLE EQUIPMENT
 	 - Sandvich (Team Fortress 2)
@@ -57,3 +66,4 @@ CONSUMABLE EQUIPMENT
 	 - Bandages (PUBG)
 	 - Health flask (Dead Cells)
 	 - Minato's kunai (Naruto)
+	 - The One Ring (LOTR)
