@@ -1,0 +1,59 @@
+Weapon classification: -
+1. Melee weapon (MAIN)
+2. Ranged weapon
+3. Offensive equipment.
+4. Consumable equipment.
+5. ??? (Special / Skill Tree)
+
+Except for the melee weapons, other weapons will have a cooldown after use.
+
+MELEE WEAPON IDEAS
+	 - Crowbar (Half Life)
+	 - Single-handed axe (Quake 1996)
+	 - Wrench (Half Life: Opposing Force / Team Fortress 2)
+	 - The Bride's Hattori Katana (Kill Bill)
+	 - Lightsaber (Star Wars)
+	 - Baseball bat (GTA III, Roadrash?, Team Fortress 2)
+	 - Spiked baseball bat (Stranger Things)
+	 - Adamantium Claws (Wolverine from the X-Men)
+	 - Knife / Machete (Vincent Sinclair of House of Wax 2005 / Inglorious Basterds / Team Fortress 2)
+	 - Bone implements (Apocalypto)
+	 - Frost's Staff (Rise of the Guardians)
+	 - Chainsaw (Scarface, GTA Vice City, DOOM)
+	 - Double-handed axe (Breaking Bad / The Shining / Team Fortress 2)
+
+RANGED WEAPON IDEAS
+	 - Flintlock pistol (Pirates of the Carribbean)
+	 - Double-barrelled shotgun (DOOM, Modern Warfare 2019, Battlefield 1)
+	 - Flamethrower (Team Fortress 2, Star Wars, Iron Man 2008)
+	 - Bow and Arrows (Robin Hood, Team Fortress 2)
+	 - Sniper Rifle (Team Fortress 2)
+	 - Boomerang (from a short story I read a long time ago)
+	 - Light Disc (TRON: Legacy)
+	 - Colt Python (Half Life)
+	 - Wingman (Titanfall 2 / Apex Legends)
+	 - Desert Eagle (Counter Strike)
+	 - Railgun (Quake III)
+	 - Bow and Arrows with explosive tips (Rambo / HLDM crossbow)
+	 - Mystic Hook (Diamond Rush)
+	 - Silenced MAC-10 (Pulp Fiction)
+	 - Bowcaster (Star Wars)
+	 - Throwing kunais (Naruto / Shadow Fight 3)
+	 - Bolt-action rifle (Territory War)
+
+OFFENSIVE EQUIPMENT
+	 - Molotov (Counter Strike)
+	 - TNT (Minecraft)
+	 - Satchel Charge (Half Life)
+	 - Frag grenade (Counter Strike)
+	 - Smoke's canister (R6S)
+	 - Caltrops (Team Fortress: Classic)
+	 - Kunai with explosive tag (Naruto)
+	 - Boot (Territory War)
+
+CONSUMABLE EQUIPMENT
+	 - Sandvich (Team Fortress 2)
+	 - Lynx's smoke bomb (Shadow Fight 2)
+	 - Bandages (PUBG)
+	 - Health flask (Dead Cells)
+	 - Minato's kunai (Naruto)
