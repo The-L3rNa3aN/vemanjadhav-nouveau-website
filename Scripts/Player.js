@@ -18,7 +18,7 @@ export default class Player extends THREE.Object3D
     Init()
     {
         //Add something here.
-        let material  = new THREE.MeshPhongMaterial({ color: 0xffffff });
+        let material  = new THREE.MeshStandardMaterial({ color: 0xffffff });
         let mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), material);
         mesh.castShadow = true;
         mesh.enableShadow = true;

@@ -1,17 +1,13 @@
 import * as THREE from "three";
-// import OBJExporter from "three-obj-exporter";
-// import OBJExporter from "./Scripts/Addons/OBJExporter";
-// import _GLTFExporter from "three-gltf-exporter";
-import GLTFExporter from "three-gltf-exporter";
+import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import Player from "./Scripts/Player";
 import IsoCamera from "./Scripts/IsoCamera";
 
 //Initialization of variables and objects.
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
-const geometry = new THREE.BoxGeometry(7.5, 1, 7.5);
-const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
-const platform = new THREE.Mesh(geometry, material);
+const platform = new THREE.Mesh(new THREE.BoxGeometry(7.5, 1, 7.5), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+// const pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
@@ -36,6 +32,15 @@ platform.receiveShadow = true;
 
 //Adding objects to the scene as children.
 scene.add(platform);
+
+for(let i = 0; i < 4; i++)
+{
+    let pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+    scene.add(pillar);
+    pillar.position.set(pillar.position.x + i, pillar.position.y, pillar.position.z + i);
+}
+
+// scene.add(pillar);
 scene.add(player);
 // scene.add(helper);
 scene.add(dirLight);
@@ -50,7 +55,7 @@ renderer.setSize(600, 600); // renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
 // document.addEventListener("keydown", player.MovePlayer.bind(player), false);
 document.addEventListener("pointermove", onPointerMove);
-document.addEventListener("mousedown", onMouseDown);
+// document.addEventListener("mousedown", onMouseDown);
 btn.addEventListener("click", download);
 
 function onPointerMove(event)
@@ -85,24 +90,16 @@ animate();
 
 function download()
 {
-    console.log("PASSED TO DOWNLOAD");
-    console.log(scene);
-    exporter.parse(scene, (result) =>
-    {
-        console.log("RESULT");
-        saveArrayBuffer(result, "testScene.glb");
-    }, { binary: true });
+    exporter.parse(scene, (gltf) => { saveArrayBuffer(gltf, "testScene.glb"); }, (error) => { console.log("Encountered an error."); }, { binary: true });
 }
 
 function saveArrayBuffer(buffer, fileName)
 {
-    console.log("PASSED TO SAVEARRAYBUFFER");
     save(new Blob([buffer], {type: "application/octet-stream"}), fileName);
 }
 
 function save(_blob, fileName)
 {
-    console.log("PASSED TO SAVE");
     const link = document.createElement("a");
     document.body.appendChild(link);
     link.href = URL.createObjectURL(_blob);
