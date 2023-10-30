@@ -33,12 +33,26 @@ platform.receiveShadow = true;
 //Adding objects to the scene as children.
 scene.add(platform);
 
-for(let i = 0; i < 4; i++)
-{
-    let pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-    scene.add(pillar);
-    pillar.position.set(pillar.position.x + i, pillar.position.y, pillar.position.z + i);
-}
+// for(let i = -2; i < 3; i++)
+// {
+//     if(i != 0)
+//     {
+//         let pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+//         scene.add(pillar);
+//         pillar.position.set(i, pillar.position.y, i);
+//     }
+// }
+
+let pillar1 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+pillar1.position.set(-2, 0, -2);
+let pillar2 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+pillar2.position.set(-2, 0, 2);
+let pillar3 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+pillar3.position.set(2, 0, -2);
+let pillar4 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+pillar4.position.set(2, 0, 2);
+
+scene.add(pillar1, pillar2, pillar3, pillar4);
 
 // scene.add(pillar);
 scene.add(player);
@@ -55,7 +69,7 @@ renderer.setSize(600, 600); // renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
 // document.addEventListener("keydown", player.MovePlayer.bind(player), false);
 document.addEventListener("pointermove", onPointerMove);
-// document.addEventListener("mousedown", onMouseDown);
+document.addEventListener("mousedown", onMouseDown);
 btn.addEventListener("click", download);
 
 function onPointerMove(event)
