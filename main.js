@@ -1,18 +1,20 @@
 import * as THREE from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Player from "./Scripts/Player";
 import IsoCamera from "./Scripts/IsoCamera";
+import { Pathfinding, PathfindingHelper } from "three-pathfinding";
 
 //Initialization of variables and objects.
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer();
-const platform = new THREE.Mesh(new THREE.BoxGeometry(7.5, 1, 7.5), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-// const pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+var platform = undefined;
 const dirLight = new THREE.DirectionalLight(0xffffff, 1);
 const raycaster = new THREE.Raycaster();
 const pointer = new THREE.Vector2();
 const exporter = new GLTFExporter();
-const btn = document.getElementById("download-glb");
+const loader = new GLTFLoader();
+// const btn = document.getElementById("download-glb");
 // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
 var player = new Player();
 var mainCamera = new IsoCamera(75, 1, 0.1, 1000);
@@ -21,38 +23,22 @@ renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 dirLight.castShadow = true;
-dirLight.shadow.mapSize.width = 512;
-dirLight.shadow.mapSize.height = 512;
+dirLight.shadow.mapSize.width = 1024;
+dirLight.shadow.mapSize.height = 1024;
 dirLight.shadow.camera.near = 0.5;
 dirLight.shadow.camera.far = 500;
 
-platform.castShadow = true;
-platform.receiveShadow = true;
-// dirLight.target = testCube;
-
 //Adding objects to the scene as children.
-scene.add(platform);
+loader.load("./Assets/Scenes/testScene/testScene.glb", (gltf) =>
+{
+    platform = gltf;
+    platform.scenes[0].children[0].castShadow = true;
+    platform.scenes[0].children[0].receiveShadow = true;
+    platform.scenes[0].children[0].material = new THREE.MeshStandardMaterial({ color: 0x808080 });
 
-// for(let i = -2; i < 3; i++)
-// {
-//     if(i != 0)
-//     {
-//         let pillar = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-//         scene.add(pillar);
-//         pillar.position.set(i, pillar.position.y, i);
-//     }
-// }
-
-let pillar1 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-pillar1.position.set(-2, 0, -2);
-let pillar2 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-pillar2.position.set(-2, 0, 2);
-let pillar3 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-pillar3.position.set(2, 0, -2);
-let pillar4 = new THREE.Mesh(new THREE.BoxGeometry(1, 3, 1), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-pillar4.position.set(2, 0, 2);
-
-scene.add(pillar1, pillar2, pillar3, pillar4);
+    console.log(player, platform);
+    scene.add(platform.scene);
+});
 
 // scene.add(pillar);
 scene.add(player);
@@ -65,12 +51,30 @@ player.position.set(0, 1, 0);
 mainCamera.position.set(-5, 5, 5);
 mainCamera.lookAt(player.position);                 //Calling this on start so that the camera is always looking at the player.
 
+const pf = new Pathfinding();
+const pfHelper = new PathfindingHelper();
+scene.add(pfHelper);
+const ZONE = "level1";
+const _speed = 5;
+let navmesh; let groupID; let navpath;
+loader.load("./Assets/Scenes/testScene/testlevelnavmesh.glb", (gltf) =>
+{
+    gltf.scene.traverse((node) =>
+    {
+        if(!navmesh && node.isObject3D && node.children && node.children.length > 0)
+        {
+            navmesh = node.children[0];
+            pf.setZoneData(ZONE, Pathfinding.createZone(navmesh.geometry));
+        }
+    });
+});
+
 renderer.setSize(600, 600); // renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
 // document.addEventListener("keydown", player.MovePlayer.bind(player), false);
 document.addEventListener("pointermove", onPointerMove);
 document.addEventListener("mousedown", onMouseDown);
-btn.addEventListener("click", download);
+// btn.addEventListener("click", download);
 
 function onPointerMove(event)
 {
@@ -81,7 +85,7 @@ function onPointerMove(event)
 function onMouseDown(event)
 {
     raycaster.setFromCamera(pointer, mainCamera);
-    const intersects = raycaster.intersectObject(platform);
+    const intersects = raycaster.intersectObject(platform.scene);
 
     // for(let i = 0; i < intersects.length; i++)
     // {
@@ -90,17 +94,31 @@ function onMouseDown(event)
     // }
 
     player.travelTo = intersects[0].point;
+
+    //CODE FROM THE PATHFINDING TUTORIAL
+    groupID = pf.getGroup(ZONE, player.position);
+    let playerPos = new THREE.Vector3(player.position.x, player.position.y + 1, player.position.z);
+    let targetPos = new THREE.Vector3(intersects[0].point.x, intersects[0].point.y + 1, intersects[0].point.z);
+    const closest = pf.getClosestNode(playerPos, ZONE, groupID);
+    navpath = pf.findPath(closest.centroid, targetPos, ZONE, groupID);
+    if(navpath)
+    {
+        pfHelper.reset();
+        pfHelper.setPlayerPosition(playerPos);
+        pfHelper.setTargetPosition(targetPos);
+        pfHelper.setPath(navpath);
+    }
 }
 
-function animate()
-{
-    requestAnimationFrame(animate);
-    mainCamera.FollowTarget(player);
-    player.MovePlayerToPoint();
-    renderer.render(scene, mainCamera);
-}
+// function animate()
+// {
+//     requestAnimationFrame(animate);
+//     mainCamera.FollowTarget(player);
+//     player.MovePlayerToPoint();
+//     renderer.render(scene, mainCamera);
+// }
 
-animate();
+// animate();
 
 function download()
 {
@@ -120,3 +138,30 @@ function save(_blob, fileName)
     link.dowload = fileName;
     link.click();
 }
+
+//CODE FROM THE PATHFINDING TUTORIAL
+function move (delta) {
+    if ( !navpath || navpath.length <= 0 ) return;
+
+    let targetPosition = navpath[ 0 ];
+    const distance = targetPosition.clone().sub( player.position );
+
+    if (distance.lengthSq() > 0.05 * 0.05) {
+        distance.normalize();
+        // Move player to target
+        player.position.add( distance.multiplyScalar( delta * 5 ) );
+    } else {
+        // Remove node from the path we calculated
+        navpath.shift();
+    }
+}
+
+const clock = new THREE.Clock();
+let gameloop = () =>
+{
+    requestAnimationFrame(gameloop);
+    mainCamera.FollowTarget(player);
+    move(clock.getDelta());
+    renderer.render(scene, mainCamera);
+};
+gameloop();

@@ -22,39 +22,41 @@ export default class Player extends THREE.Object3D
         let mesh = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.5, 0.5), material);
         mesh.castShadow = true;
         mesh.enableShadow = true;
+        this.castShadow = true;
+        this.receiveShadow = true;
 
         this.add(mesh);
     }
 
-    MovePlayer(event)
-    {
-        var _keyCode = event.which;
+    // MovePlayer(event)
+    // {
+    //     var _keyCode = event.which;
 
-        switch(_keyCode)
-        {
-            case 87:                                        //W
-                this.position.x += 1;
-                break;
+    //     switch(_keyCode)
+    //     {
+    //         case 87:                                        //W
+    //             this.position.x += 1;
+    //             break;
     
-            case 65:                                        //A
-                this.rotation.y += 25;
-                break;
+    //         case 65:                                        //A
+    //             this.rotation.y += 25;
+    //             break;
 
-            case 83:                                        //S
-                this.position.x -= 1;
-                break;
+    //         case 83:                                        //S
+    //             this.position.x -= 1;
+    //             break;
 
-            case 68:                                        //D
-                this.rotation.y -= 25;
-                break;
-        }
-    }
+    //         case 68:                                        //D
+    //             this.rotation.y -= 25;
+    //             break;
+    //     }
+    // }
 
     MovePlayerToPoint()
     {
         if(this.travelTo != undefined) 
         {
-            this.position.lerp(new THREE.Vector3(this.travelTo.x, this.position.y, this.travelTo.z), 0.01);
+            this.position.lerp(new THREE.Vector3(this.travelTo.x, this.travelTo.y + 1, this.travelTo.z), 0.01);
         }
     }
 }
