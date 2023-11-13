@@ -40,7 +40,6 @@ loader.load("./Assets/Scenes/testScene/testScene.glb", (gltf) =>
     scene.add(platform.scene);
 });
 
-// scene.add(pillar);
 scene.add(player);
 // scene.add(helper);
 scene.add(dirLight);
@@ -72,42 +71,36 @@ loader.load("./Assets/Scenes/testScene/testlevelnavmesh.glb", (gltf) =>
 renderer.setSize(600, 600); // renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
 // document.addEventListener("keydown", player.MovePlayer.bind(player), false);
-document.addEventListener("pointermove", onPointerMove);
-document.addEventListener("mousedown", onMouseDown);
 // btn.addEventListener("click", download);
-
-function onPointerMove(event)
+window.addEventListener('click', () =>
 {
     pointer.x = (event.clientX / renderer.domElement.width) * 2 - 1;
     pointer.y = -(event.clientY / renderer.domElement.height) * 2 + 1;
-}
 
-function onMouseDown(event)
-{
-    raycaster.setFromCamera(pointer, mainCamera);
-    const intersects = raycaster.intersectObject(platform.scene);
+    let found = findIntersect(pointer);
 
-    // for(let i = 0; i < intersects.length; i++)
-    // {
-    //     // intersects[i].object.material.color.set(0xffffff);
-    //     console.log(intersects[i].point);
-    // }
-
-    player.travelTo = intersects[0].point;
-
-    //CODE FROM THE PATHFINDING TUTORIAL
-    groupID = pf.getGroup(ZONE, player.position);
-    let playerPos = new THREE.Vector3(player.position.x, player.position.y + 1, player.position.z);
-    let targetPos = new THREE.Vector3(intersects[0].point.x, intersects[0].point.y + 1, intersects[0].point.z);
-    const closest = pf.getClosestNode(playerPos, ZONE, groupID);
-    navpath = pf.findPath(closest.centroid, targetPos, ZONE, groupID);
-    if(navpath)
+    if(found.length > 0)
     {
-        pfHelper.reset();
-        pfHelper.setPlayerPosition(playerPos);
-        pfHelper.setTargetPosition(targetPos);
-        pfHelper.setPath(navpath);
+        let target = found[0].point;
+        let playerPos = player.position;
+        groupID = pf.getGroup(ZONE, playerPos);
+        let closest = pf.getClosestNode(playerPos, ZONE, groupID);
+        navpath = pf.findPath(closest.centroid, target, ZONE, groupID);
+
+        if(navpath)
+        {
+            pfHelper.reset();
+            pfHelper.setPlayerPosition(playerPos);
+            pfHelper.setTargetPosition(targetPos);
+            pfHelper.setPath(navpath);
+        }
     }
+});
+
+function findIntersect(pos)
+{
+    raycaster.setFromCamera(pos, mainCamera);
+    return raycaster.intersectObjects(scene.children);
 }
 
 // function animate()

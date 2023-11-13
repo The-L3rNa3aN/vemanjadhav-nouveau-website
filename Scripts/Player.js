@@ -24,6 +24,7 @@ export default class Player extends THREE.Object3D
         mesh.enableShadow = true;
         this.castShadow = true;
         this.receiveShadow = true;
+        mesh.position.set(0, 0.5);
 
         this.add(mesh);
     }
