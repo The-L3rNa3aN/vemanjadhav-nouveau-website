@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import Player from "./Scripts/Player";
+import DummyEnemy from "./Scripts/DummyEnemy";
 import IsoCamera from "./Scripts/IsoCamera";
 import { Pathfinding, PathfindingHelper } from "three-pathfinding";
 
@@ -17,7 +18,8 @@ const loader = new GLTFLoader();
 // const btn = document.getElementById("download-glb");
 // const helper = new THREE.CameraHelper(dirLight.shadow.camera);
 var player = new Player();
-var mainCamera = new IsoCamera(75, 1, 0.1, 1000);
+var dummyEnemy = new DummyEnemy();
+var mainCamera = new IsoCamera(75, 2, 0.1, 1000);           //Somehow, '2' for the "aspect" argument somehow works.
 
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
@@ -41,12 +43,14 @@ loader.load("./Assets/Scenes/testScene/testScene.glb", (gltf) =>
 });
 
 scene.add(player);
+scene.add(dummyEnemy);
 // scene.add(helper);
 scene.add(dirLight);
 // scene.add(dirLight.target);
 
 dirLight.position.set(3, 5, 1);
 player.position.set(0, 1, 0);
+dummyEnemy.position.set(4, 1, 4);
 mainCamera.position.set(-5, 5, 5);
 mainCamera.lookAt(player.position);                 //Calling this on start so that the camera is always looking at the player.
 
@@ -54,7 +58,6 @@ const pf = new Pathfinding();
 const pfHelper = new PathfindingHelper();
 scene.add(pfHelper);
 const ZONE = "level1";
-const _speed = 5;
 let navmesh; let groupID; let navpath;
 loader.load("./Assets/Scenes/testScene/testlevelnavmesh.glb", (gltf) =>
 {
@@ -68,7 +71,7 @@ loader.load("./Assets/Scenes/testScene/testlevelnavmesh.glb", (gltf) =>
     });
 });
 
-renderer.setSize(600, 600); // renderer.setSize(725, 725);
+renderer.setSize(window.innerWidth, window.innerHeight); // renderer.setSize(600, 600); // renderer.setSize(725, 725);
 document.body.appendChild(renderer.domElement);
 // document.addEventListener("keydown", player.MovePlayer.bind(player), false);
 // btn.addEventListener("click", download);
