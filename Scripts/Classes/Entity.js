@@ -2,11 +2,25 @@
 The purpose of the Entity class is to have basic things like taking damage, events like death and other basic things common. */
 
 import * as THREE from "three";
+import BasicHealthSystem from "./BasicHealthSystem";
 
 export default class Entity extends THREE.Group
 {
     constructor()
     {
-        this.health = 100;
+        this.healthSystem;
+        this.target = undefined;
+
+        this.setHealthSystem();
+    }
+
+    setHealthSystem()
+    {
+        this.healthSystem = new BasicHealthSystem();
+    }
+
+    setTarget(_target)
+    {
+        this.target = _target;
     }
 }

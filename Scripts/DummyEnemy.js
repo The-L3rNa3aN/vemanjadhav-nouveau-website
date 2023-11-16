@@ -1,16 +1,15 @@
 /* Dummy enemy for pathfinding testing. */
 
 import * as THREE from "three";
+import Entity from "./Classes/Entity";
 
-export default class DummyEnemy extends THREE.Object3D
+export default class DummyEnemy extends Entity
 {
     constructor()
     {
         super();
 
-        this.health = 100;
         this.speed = 5;
-        this.target = undefined;
         this.detectionSphere = undefined;
 
         this.Init();
@@ -32,10 +31,5 @@ export default class DummyEnemy extends THREE.Object3D
 
         this.add(mesh);
         this.add(this.detectionSphere);
-    }
-
-    FollowEnemy()
-    {
-
     }
 }
